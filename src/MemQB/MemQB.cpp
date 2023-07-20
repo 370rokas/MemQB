@@ -2,7 +2,7 @@
 // Created by rokas on 7/20/23.
 //
 
-#include "include/MemQB.hpp"
+#include "MemQB.hpp"
 
 void MemQB::QB::addTask(const MemQB::Task& newTask) {
     taskQueue.push(newTask);
@@ -12,26 +12,23 @@ void MemQB::QB::addTask(const MemQB::Task& newTask) {
     }
 }
 
-unsigned long MemQB::QB::queueSize() {
-    return taskQueue.size();
-}
+unsigned long MemQB::QB::queueSize() { return taskQueue.size(); }
 
-bool MemQB::QB::queueEmpty() {
-    return taskQueue.empty();
-}
+bool MemQB::QB::queueEmpty() { return taskQueue.empty(); }
 
 void MemQB::QB::processNextTask() {
     Task& currentTask = taskQueue.front();
 
     switch (currentTask.taskType) {
-        case (MemQB::FileFormat::CSV):
+    case (MemQB::FileFormat::CSV):
 
-            break;
+        break;
     }
 }
 
 void MemQB::QB::processTasks() {
-    if (processing) return;
+    if (processing)
+        return;
     processing = true;
 
     while (!taskQueue.empty()) {

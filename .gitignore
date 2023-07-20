@@ -1,2 +1,5 @@
 cmake-build-debug/
 .idea/
+build/
+csvfile.csv
+.vscode/

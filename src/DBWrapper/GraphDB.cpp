@@ -2,7 +2,7 @@
 // Created by rokas on 7/20/23.
 //
 
-#include "GraphDB.hpp"
+#include "DBWrapper/GraphDB.hpp"
 
 #include <iostream>
 
@@ -32,9 +32,7 @@ GraphDB::~GraphDB() {
     mg::Client::Finalize();
 }
 
-std::unique_ptr<mg::Client> *GraphDB::GetClient() {
-    return &client;
-}
+std::unique_ptr<mg::Client>* GraphDB::GetClient() { return &client; }
 
 // Executes a query, which returns no values
 void GraphDB::Execute(const std::string& query) {
@@ -46,6 +44,4 @@ void GraphDB::Execute(const std::string& query) {
     client->DiscardAll();
 }
 
-void GraphDB::ClearDatabaseData() {
-    Execute("MATCH (n) DETACH DELETE n;");
-}
+void GraphDB::ClearDatabaseData() { Execute("MATCH (n) DETACH DELETE n;"); }

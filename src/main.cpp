@@ -1,9 +1,18 @@
 #include <iostream>
+#include <string>
 
-#include <mgclient.hpp>
+#include "services/GraphDB.hpp"
 
 int main() {
-    mg::Client::Init();
+
+    /*GraphDB db("100.86.156.96", 7687, false);
+
+    if (!db.IsReady()) {
+        std::cerr << "Failed to connect!\n";
+        return -1;
+    }
+
+    db.Execute("CREATE (:Country {name: 'France', language: 'French', continent: 'Europe'});");*/
 
 
     return 0;

@@ -1,6 +1,10 @@
 #include <iostream>
 
+#include <mgclient.hpp>
+
 int main() {
-    std::cout << "Hello, World!" << std::endl;
+    mg::Client::Init();
+
+
     return 0;
 }

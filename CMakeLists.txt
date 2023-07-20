@@ -1,11 +1,21 @@
 cmake_minimum_required(VERSION 3.25)
-project(TestParser)
+project(MemQB)
 
 set(CMAKE_CXX_STANDARD 17)
 
-add_executable(TestParser src/main.cpp src/services/GraphDB.cpp src/services/GraphDB.hpp)
+add_library(
+        MemQB
+        src/services/GraphDB.cpp
+)
 
-target_link_libraries(TestParser
+target_include_directories(
+        MemBQ
+        PUBLIC
+        src/include
+)
+
+target_link_libraries(
+        MemQB
         PUBLIC
         mgclient
-        )
+)

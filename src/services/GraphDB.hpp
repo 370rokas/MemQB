@@ -2,8 +2,8 @@
 // Created by rokas on 7/20/23.
 //
 
-#ifndef TESTPARSER_GRAPHDB_HPP
-#define TESTPARSER_GRAPHDB_HPP
+#ifndef MEMQB_GRAPHDB_HPP
+#define MEMQB_GRAPHDB_HPP
 
 #include <string>
 #include <vector>
@@ -34,4 +34,4 @@ public:
 };
 
 
-#endif //TESTPARSER_GRAPHDB_HPP
+#endif //MEMQB_GRAPHDB_HPP

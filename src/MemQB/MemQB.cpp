@@ -6,8 +6,6 @@
 
 #include "Handlers/csvHandler.hpp"
 
-#define AMT_HANDLE_AT_ONCE 10
-
 void MemQB::QB::addTask(const MemQB::Task& newTask) {
     this->taskQueue.push(newTask);
 

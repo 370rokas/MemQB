@@ -23,12 +23,16 @@ void MemQB::Handlers::CSV::handleFile(
 
     // TODO: finish
 
-    // Read couple lines (perhaps 10)
+    // loop while there are values here!
 
-    // Create a new vector, move lines from csv vector to new vector
-    // with designated template formatting
+        // Read couple lines (perhaps 10)
 
-    // Construct a query with all the formatted values
+        // Create a new vector, move lines from csv vector to new vector
+        // with designated template formatting
 
-    // Execute the query
+        // Construct a query with all the formatted values
+
+        // Execute the query
+
+    // cleanup csv handler and whatnot
 }

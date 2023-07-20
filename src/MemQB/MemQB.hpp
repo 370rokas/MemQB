@@ -5,6 +5,8 @@
 #ifndef MEMQB_HPP
 #define MEMQB_HPP
 
+#define AMT_HANDLE_AT_ONCE 10
+
 #include <string>
 #include <queue>
 

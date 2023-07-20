@@ -1,4 +1,4 @@
-#include "parsers/csv/csv.hpp"
+#include "Parsers/csv/csv.hpp"
 
 #include <iostream>
 
@@ -13,5 +13,8 @@ int main(int argc, char** argv) {
     std::vector<std::string> vec = {};
     x.readLine(vec);
 
-    std::cout << vec[0] << std::endl;
+    for (auto h : x.getCSVHeader()) {
+
+        std::cout << h << std::endl;
+    }
 }

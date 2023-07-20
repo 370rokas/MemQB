@@ -25,7 +25,6 @@ void CSVReader::readLine(std::vector<std::string>& vec) {
     std::string line{};
     std::getline(this->filePointer, line);
     
-    this->lineNumber++;
 
 
     std::stringstream ss(line);
@@ -38,6 +37,8 @@ void CSVReader::readLine(std::vector<std::string>& vec) {
             vec.push_back(substr);
         }
     }
+
+    this->lineNumber++;
 }
 
  /*

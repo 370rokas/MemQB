@@ -10,6 +10,8 @@
 
 #include <nlohmann/json.hpp>
 
+#include "DBWrapper/GraphDB.hpp"
+
 namespace MemQB {
 
     enum class FileFormat {
@@ -27,11 +29,16 @@ namespace MemQB {
         std::queue<Task> taskQueue;
         bool processing = false;
 
+        GraphDB* database = nullptr;
+
         // Private Functions
         void processTasks();
         void processNextTask();
 
     public:
+        // Constructors
+        QB(const std::string& host, uint16_t port, bool ssl);
+
         // Queue Management tasks
         void addTask(const Task& newTask);
 

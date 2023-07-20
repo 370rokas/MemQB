@@ -5,7 +5,6 @@
  * @param filepath: The file to open
  */
 void CSVReader::openFile(std::filesystem::path& filepath) {
-
     this->filePointer = std::ifstream(filepath);
 
     if (!this->filePointer.is_open()) {
@@ -24,8 +23,6 @@ void CSVReader::readLine(std::vector<std::string>& vec) {
 
     std::string line{};
     std::getline(this->filePointer, line);
-    
-
 
     std::stringstream ss(line);
     while (ss.good()) {

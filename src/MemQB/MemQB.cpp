@@ -4,6 +4,10 @@
 
 #include "MemQB.hpp"
 
+#include "Handlers/csvHandler.hpp"
+
+#define AMT_HANDLE_AT_ONCE 10
+
 void MemQB::QB::addTask(const MemQB::Task& newTask) {
     this->taskQueue.push(newTask);
 
@@ -21,7 +25,9 @@ void MemQB::QB::processNextTask() {
 
     switch (currentTask.taskType) {
     case (MemQB::FileFormat::CSV):
-
+        MemQB::Handlers::CSV::handleFile(
+                database,
+                currentTask.fileLocation);
         break;
     }
 }
@@ -37,4 +43,10 @@ void MemQB::QB::processTasks() {
     }
 
     this->processing = false;
+}
+
+MemQB::QB::QB(const std::string &host, uint16_t port, bool ssl) {
+    database = new GraphDB(host, port, ssl);
+
+
 }

@@ -1,0 +1,3 @@
+[submodule "ext/mgclient"]
+	path = ext/mgclient
+	url = https://github.com/memgraph/mgclient.git

@@ -16,32 +16,36 @@ GraphDB::GraphDB(const std::string& host, uint16_t port, bool ssl) {
     clientParams.use_ssl = ssl;
 
     // Connection
-    client = mg::Client::Connect(clientParams);
+    this->client = mg::Client::Connect(clientParams);
 
-    if (!client) {
+    if (!this->client) {
         std::cerr << "Failed to connect!\n";
         return;
     } else {
-        ready = true;
+        this->ready = true;
     }
 }
 
 GraphDB::~GraphDB() {
-    client.reset(nullptr);
+    this->client.reset(nullptr);
 
     mg::Client::Finalize();
 }
 
-std::unique_ptr<mg::Client>* GraphDB::GetClient() { return &client; }
+std::unique_ptr<mg::Client>* GraphDB::GetClient() { return &this->client; }
 
 // Executes a query, which returns no values
 void GraphDB::Execute(const std::string& query) {
-    if (!client->Execute(query)) {
+    if (!this->client->Execute(query)) {
         std::cerr << "Query failed." << std::endl;
         std::exit(1);
     }
 
-    client->DiscardAll();
+    this->client->DiscardAll();
 }
 
-void GraphDB::ClearDatabaseData() { Execute("MATCH (n) DETACH DELETE n;"); }
+void GraphDB::ClearDatabaseData() { this->Execute("MATCH (n) DETACH DELETE n;"); }
+
+bool GraphDB::IsReady() {
+    return this->ready;
+}

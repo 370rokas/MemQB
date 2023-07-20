@@ -5,19 +5,19 @@
 #include "MemQB.hpp"
 
 void MemQB::QB::addTask(const MemQB::Task& newTask) {
-    taskQueue.push(newTask);
+    this->taskQueue.push(newTask);
 
-    if (!processing) {
+    if (!this->processing) {
         processTasks();
     }
 }
 
-unsigned long MemQB::QB::queueSize() { return taskQueue.size(); }
+unsigned long MemQB::QB::queueSize() { return this->taskQueue.size(); }
 
-bool MemQB::QB::queueEmpty() { return taskQueue.empty(); }
+bool MemQB::QB::queueEmpty() { return this->taskQueue.empty(); }
 
 void MemQB::QB::processNextTask() {
-    Task& currentTask = taskQueue.front();
+    Task& currentTask = this->taskQueue.front();
 
     switch (currentTask.taskType) {
     case (MemQB::FileFormat::CSV):
@@ -27,14 +27,14 @@ void MemQB::QB::processNextTask() {
 }
 
 void MemQB::QB::processTasks() {
-    if (processing)
+    if (this->processing)
         return;
-    processing = true;
+    this->processing = true;
 
-    while (!taskQueue.empty()) {
-        processNextTask();
-        taskQueue.pop();
+    while (!this->taskQueue.empty()) {
+        this->processNextTask();
+        this->taskQueue.pop();
     }
 
-    processing = false;
+    this->processing = false;
 }

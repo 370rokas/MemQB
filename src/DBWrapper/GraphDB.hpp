@@ -20,9 +20,7 @@ public:
     ~GraphDB();
 
     // Helper Functions
-    bool IsReady() {
-        return ready;
-    }
+    bool IsReady();
 
     std::unique_ptr<mg::Client>* GetClient();
 

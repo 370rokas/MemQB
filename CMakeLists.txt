@@ -19,7 +19,6 @@ add_library(MemQB
 
 add_executable(MemQBTest src/main.cpp)
 
-
 target_include_directories(MemQB PUBLIC
         src/
 )

@@ -25,10 +25,15 @@ namespace MemQB {
     class QB {
     protected:
         std::queue<Task> taskQueue;
+        bool processing = false;
+
+        // Private Functions
+        void processTasks();
+        void processNextTask();
 
     public:
         // Queue Management tasks
-        void addTask(Task newTask);
+        void addTask(const Task& newTask);
 
         // Utils
         unsigned long queueSize();

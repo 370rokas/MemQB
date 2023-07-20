@@ -4,8 +4,12 @@
 
 #include "include/MemQB.hpp"
 
-void MemQB::QB::addTask(MemQB::Task newTask) {
+void MemQB::QB::addTask(const MemQB::Task& newTask) {
     taskQueue.push(newTask);
+
+    if (!processing) {
+        processTasks();
+    }
 }
 
 unsigned long MemQB::QB::queueSize() {
@@ -14,4 +18,26 @@ unsigned long MemQB::QB::queueSize() {
 
 bool MemQB::QB::queueEmpty() {
     return taskQueue.empty();
+}
+
+void MemQB::QB::processNextTask() {
+    Task& currentTask = taskQueue.front();
+
+    switch (currentTask.taskType) {
+        case (MemQB::FileFormat::CSV):
+
+            break;
+    }
+}
+
+void MemQB::QB::processTasks() {
+    if (processing) return;
+    processing = true;
+
+    while (!taskQueue.empty()) {
+        processNextTask();
+        taskQueue.pop();
+    }
+
+    processing = false;
 }

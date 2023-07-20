@@ -9,8 +9,9 @@ add_subdirectory(ext/mgclient)
 
 add_library(
         MemQB
+        src/MemQB.cpp
         src/services/GraphDB.cpp
-        src/MemQB.cpp)
+)
 
 target_include_directories(
         MemQB

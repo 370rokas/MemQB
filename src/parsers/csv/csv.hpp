@@ -4,6 +4,7 @@
 #include <filesystem>
 #include <fstream>
 #include <sstream>
+#include <string>
 #include <vector>
 
 class CSVReader {
@@ -30,8 +31,17 @@ public:
      */
     void readLine(std::vector<std::string>& vec);
 
+     /*
+     * @brief: Read the next line of the file that was opened earlier
+     * @param vec: The vector to which the next line is to be pushed
+     */
+    std::vector<std::string> getCSVHeader();
+
 private:
     std::ifstream filePointer;
+    std::vector<std::string> csvHeader;
+
+    size_t lineNumber = 0;
 };
 
 #endif // CSVREADER_HPP

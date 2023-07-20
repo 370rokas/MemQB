@@ -24,13 +24,31 @@ void CSVReader::readLine(std::vector<std::string>& vec) {
 
     std::string line{};
     std::getline(this->filePointer, line);
-    std::stringstream ss(line);
+    
+    this->lineNumber++;
 
+
+    std::stringstream ss(line);
     while (ss.good()) {
         std::string substr;
         std::getline(ss, substr, ',');
-        vec.push_back(substr);
+        if (lineNumber == 0) {
+            this->csvHeader.push_back(substr);
+        } else {
+            vec.push_back(substr);
+        }
     }
+}
+
+ /*
+ * @brief: Read the next line of the file that was opened earlier
+ * @param vec: The vector to which the next line is to be pushed
+ */
+std::vector<std::string> CSVReader::getCSVHeader() {
+    if (this->csvHeader.empty()) {
+        throw std::runtime_error("No CSV header was read");
+    }
+    return this->csvHeader;
 }
 
 /*

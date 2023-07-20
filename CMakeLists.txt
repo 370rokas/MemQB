@@ -14,7 +14,7 @@ add_subdirectory(ext/mgclient)
 add_library(MemQB
         src/MemQB/MemQB.cpp
         src/DBWrapper/GraphDB.cpp
-        src/parsers/csv/csv.cpp
+        src/Parsers/csv/csv.cpp
 )
 
 add_executable(MemQBTest src/main.cpp)

@@ -33,7 +33,6 @@ public:
 
     /*
      * @brief: Read the next line of the file that was opened earlier
-     * @param vec: The vector to which the next line is to be pushed
      */
     void readLine();
 
@@ -43,9 +42,12 @@ public:
      */
     std::vector<std::string>* getCSVHeader();
 
-    void loadFileIntoMemory(std::filesystem::path& fpath);
+    void loadFileIntoMemory();
 
     std::map<std::string, std::vector<std::string>*> csvFile;
+
+    std::vector<std::string> getRow(size_t row);
+    size_t getNumRows();
 
     std::vector<std::string>
     string_to_vector(std::string& s, const char delimiter, const char escape);

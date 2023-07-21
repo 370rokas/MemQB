@@ -14,14 +14,15 @@ int main(int argc, char** argv) {
 
     std::vector<std::string> vec = {};
 
-    x.readLine();
-    x.readLine();
+    x.loadFileIntoMemory();
 
-    for (auto kv : x.csvFile) {
-        std::cout << kv.first << ": ";
-        for (auto it = kv.second->begin(); it != kv.second->end(); ++it) {
-            std::cout << *it << "\t";
-        }
-        std::cout << std::endl;
-    }
+    // std::vector<std::string> row{};
+    // for (size_t i = 0; i < x.getNumRows(); i++) {
+    //     row = x.getRow(i);
+    //
+    //    for (auto item : row) {
+    //        std::cout << item << '\t';
+    //    }
+    //    std::cout << std::endl;
+    //}
 }

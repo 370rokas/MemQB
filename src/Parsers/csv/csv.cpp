@@ -31,6 +31,9 @@ void CSVReader::openFile(std::filesystem::path& filepath) {
         std::vector<std::string>* vect = new std::vector<std::string>;
         this->csvFile.insert({substr, vect});
     }
+
+    // Set the local class headers variable
+    this->getCSVHeader();
 }
 
 std::vector<std::string> CSVReader::string_to_vector(std::string& s,
@@ -77,11 +80,48 @@ void CSVReader::readLine() {
     }
 }
 
-void CSVReader::loadFileIntoMemory(std::filesystem::path& fpath) {
-    if (this->API == APIType::STREAM) {
+std::vector<std::string> CSVReader::getRow(size_t row_num) {
+    std::vector<std::string> row{};
+
+    // for each column
+    for (auto kv : this->csvFile) {
+        auto col = kv.second;
+        // get one item from each column
+        row.push_back(col->at(row_num));
+    }
+
+    return row;
+}
+
+size_t CSVReader::getNumRows() {
+    return this->csvFile.at(this->csvHeader[0])->size();
+}
+
+// TODO: PLEASE PLEASE PLEASE AVOID CODE REPEAT
+// TODO: PLEASE I BEG YOU STEVE FROM THE FUTURE
+void CSVReader::loadFileIntoMemory() {
+
+    if (this->API == APIType::MMAP) {
         throw std::runtime_error(
-            "This function can't be used with the STREAM API.");
+            "This function can't be used with the MMAP API.");
         return;
+    }
+
+    if (!this->filePointer.is_open()) {
+        throw std::runtime_error("No files have been opened");
+    }
+
+    std::string line{};
+    while (std::getline(this->filePointer, line)) {
+
+        std::vector<std::string> line_vec =
+            this->string_to_vector(line, ',', '\\');
+
+        // For each header
+        auto colIdx = 0;
+        for (auto kv : csvFile) {
+            kv.second->push_back(line_vec[colIdx++]);
+        }
     }
 
     // create hashmap of vectors

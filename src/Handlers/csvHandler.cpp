@@ -19,8 +19,12 @@ void MemQB::Handlers::CSV::handleFile(GraphDB* db, const std::string& filePath,
     auto csvHeaders = csvReader.getCSVHeader();
     std::vector<std::vector<std::string>> formattedData;
 
-
     // TODO: finish
+
+    std::vector<std::string> row{};
+    for (size_t i = 0; i < csvReader.getNumRows(); i++) {
+        row = csvReader.getRow(i);
+    }
 
     // loop while there are values here!
 

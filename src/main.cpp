@@ -14,7 +14,15 @@ int main(int argc, char** argv) {
     x.readLine(vec);
 
     for (auto h : x.getCSVHeader()) {
-
         std::cout << h << std::endl;
     }
+
+    "R(
+        {
+            email: {},
+            phone: {},
+            name: {},
+            
+        }
+    )"
 }

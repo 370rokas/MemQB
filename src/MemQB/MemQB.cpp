@@ -23,9 +23,8 @@ void MemQB::QB::processNextTask() {
 
     switch (currentTask.taskType) {
     case (MemQB::FileFormat::CSV):
-        MemQB::Handlers::CSV::handleFile(
-                database,
-                currentTask.fileLocation);
+        MemQB::Handlers::CSV::handleFile(database, currentTask.fileLocation,
+                                         currentTask.valueMappings);
         break;
     }
 }
@@ -43,8 +42,6 @@ void MemQB::QB::processTasks() {
     this->processing = false;
 }
 
-MemQB::QB::QB(const std::string &host, uint16_t port, bool ssl) {
+MemQB::QB::QB(const std::string& host, uint16_t port, bool ssl) {
     database = new GraphDB(host, port, ssl);
-
-
 }

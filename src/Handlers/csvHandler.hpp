@@ -10,10 +10,8 @@
 #include <nlohmann/json.hpp>
 
 namespace MemQB::Handlers::CSV {
-    void handleFile(
-            GraphDB* db,
-            const std::string& filePath,
-            const nlohmann::json& conversionTemplate);
+void handleFile(GraphDB* db, const std::string& filePath,
+                const nlohmann::json& conversionTemplate);
 }
 
-#endif //MEMQB_CSVHANDLER_HPP
+#endif // MEMQB_CSVHANDLER_HPP

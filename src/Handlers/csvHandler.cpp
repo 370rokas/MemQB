@@ -5,8 +5,10 @@
 #include "csvHandler.hpp"
 
 #include "MemQB/MemQB.hpp"
+#include "MemQB/QueryBuilder.hpp"
 #include "Parsers/csv/csv.hpp"
 
+using namespace MemQB::QueryBuilder;
 using json = nlohmann::json;
 
 void MemQB::Handlers::CSV::handleFile(GraphDB* db, const std::string& filePath,
@@ -22,25 +24,54 @@ void MemQB::Handlers::CSV::handleFile(GraphDB* db, const std::string& filePath,
 
     const size_t nRows = csvReader.getNumRows();
 
-    std::vector<std::vector<std::string>> formattedRows;
+    std::vector<QueryBuilder::FormattedQuery> formattedQueries;
     std::vector<std::string> vCurrentRow;
 
     for (size_t currentRow = 0; currentRow < nRows; currentRow++) {
         vCurrentRow.clear();
 
-        auto row = csvReader.getRow(currentRow);
+        vCurrentRow = csvReader.getRow(currentRow);
 
-        // TODO: format the row, then put it into formattedRows
-        formattedRows.push_back(row);
+        FormattedQuery formattedQuery;
 
-        if (formattedRows.size() == AMT_HANDLE_AT_ONCE
-            || (currentRow + 1 == nRows && !formattedRows.empty())) {
+        // Create Nodes
+        for (auto& [label, properties] : conversionTemplate["Nodes"].items()) {
+            Node tempNode;
+            tempNode.label = label;
+
+            for (auto& [key, value] : properties.items()) {
+                tempNode.properties.emplace_back(key, value.template get<std::string>());
+            }
+
+            formattedQuery.nodes.emplace_back(tempNode);
+        }
+
+        // Create Relationships
+        for (auto& relationship : conversionTemplate["Relationships"].items()) {
+            Relationship tempRel;
+
+            tempRel.label = relationship.value()["name"].template get<std::string>();
+            tempRel.n1 = relationship.value()["l1"].template get<std::string>();
+            tempRel.n2 = relationship.value()["l2"].template get<std::string>();
+
+            for (auto& [key, value] : relationship.value()["props"].items()) {
+                tempRel.properties.emplace_back(key, value.template get<std::string>());
+            }
+
+            formattedQuery.relationships.emplace_back(tempRel);
+        }
+
+        formattedQueries.emplace_back(formattedQuery);
+
+        if (formattedQueries.size() == AMT_HANDLE_AT_ONCE
+            || (currentRow + 1 == nRows && !formattedQueries.empty())) {
             // TODO: Construct a query with all the formatted values
-            std::cout << "UPLOAD TO THE DATABASE " << formattedRows.size() << "\n";
+
             // TODO: Execute the query
+            std::cout << "UPLOAD TO THE DATABASE " << formattedQueries.size() << "\n";
 
             // Clear the vector
-            formattedRows.clear();
+            formattedQueries.clear();
         }
     }
 }

@@ -15,7 +15,7 @@ add_library(MemQB
         src/MemQB/MemQB.cpp
         src/DBWrapper/GraphDB.cpp
         src/Parsers/csv/csv.cpp
-        src/Handlers/csvHandler.cpp src/Handlers/csvHandler.hpp)
+        src/Handlers/csvHandler.cpp src/Handlers/csvHandler.hpp src/MemQB/QueryBuilder.cpp src/MemQB/QueryBuilder.hpp)
 
 add_executable(MemQBTest src/main.cpp)
 

@@ -1,28 +1,49 @@
-#include "Parsers/csv/csv.hpp"
-
 #include <iostream>
+
+#include <MemQB/MemQB.hpp>
 
 using namespace MemQB;
 
 int main(int argc, char** argv) {
     std::cout << "Hi" << std::endl;
 
-    IO::CSVReader x{IO::APIType::STREAM};
+    auto memQB = QB("100.86.156.96", 7687, false);
 
-    std::filesystem::path fpath(argv[1]);
-    x.openFile(fpath);
+    Task testTask;
+    testTask.taskType = FileFormat::CSV;
+    testTask.fileLocation = argv[1];
+    testTask.valueMappings = nlohmann::json::parse(R"(
+        {
+            "Nodes": {
+                "Person": {
+                    "Email": "email",
+                    "Name": "name"
+                },
 
-    std::vector<std::string> vec = {};
+                "Password": {
+                    "Password": "password"
+                }
+            },
 
-    x.loadFileIntoMemory();
+            "Relationships": [
+                {
+                    "name": "RELATED_PASSWORD",
+                    "l1": "Person",
+                    "l2": "Password",
+                    "props": {}
+                },
 
-    // std::vector<std::string> row{};
-    // for (size_t i = 0; i < x.getNumRows(); i++) {
-    //     row = x.getRow(i);
-    //
-    //    for (auto item : row) {
-    //        std::cout << item << '\t';
-    //    }
-    //    std::cout << std::endl;
-    //}
+                {
+                    "name": "RELATED_PERSON",
+                    "l1": "Password",
+                    "l2": "Person",
+                    "props": {}
+                }
+            ]
+        }
+    )");
+
+    memQB.addTask(testTask);
+
+    return 0;
 }

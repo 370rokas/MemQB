@@ -4,6 +4,7 @@
 
 #include "csvHandler.hpp"
 
+#include "MemQB/MemQB.hpp"
 #include "Parsers/csv/csv.hpp"
 
 using json = nlohmann::json;
@@ -17,25 +18,29 @@ void MemQB::Handlers::CSV::handleFile(GraphDB* db, const std::string& filePath,
     csvReader.openFile(path);
 
     auto csvHeaders = csvReader.getCSVHeader();
-    std::vector<std::vector<std::string>> formattedData;
+    csvReader.loadFileIntoMemory();
 
-    // TODO: finish
+    const size_t nRows = csvReader.getNumRows();
 
-    std::vector<std::string> row{};
-    for (size_t i = 0; i < csvReader.getNumRows(); i++) {
-        row = csvReader.getRow(i);
+    std::vector<std::vector<std::string>> formattedRows;
+    std::vector<std::string> vCurrentRow;
+
+    for (size_t currentRow = 0; currentRow < nRows; currentRow++) {
+        vCurrentRow.clear();
+
+        auto row = csvReader.getRow(currentRow);
+
+        // TODO: format the row, then put it into formattedRows
+        formattedRows.push_back(row);
+
+        if (formattedRows.size() == AMT_HANDLE_AT_ONCE
+            || (currentRow + 1 == nRows && !formattedRows.empty())) {
+            // TODO: Construct a query with all the formatted values
+            std::cout << "UPLOAD TO THE DATABASE " << formattedRows.size() << "\n";
+            // TODO: Execute the query
+
+            // Clear the vector
+            formattedRows.clear();
+        }
     }
-
-    // loop while there are values here!
-
-    // Read couple lines (perhaps 10)
-
-    // Create a new vector, move lines from csv vector to new vector
-    // with designated template formatting
-
-    // Construct a query with all the formatted values
-
-    // Execute the query
-
-    // cleanup csv handler and whatnot
 }

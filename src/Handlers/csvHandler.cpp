@@ -13,10 +13,12 @@ void MemQB::Handlers::CSV::handleFile(GraphDB* db, const std::string& filePath,
 
     std::filesystem::path path{filePath};
 
-    //    IO::CSVReader reader;
-    // reader.openFile(path);
+    IO::CSVReader csvReader(IO::APIType::STREAM);
+    csvReader.openFile(path);
 
-    // auto csvHeader = reader.getCSVHeader();
+    auto csvHeaders = csvReader.getCSVHeader();
+    std::vector<std::vector<std::string>> formattedData;
+
 
     // TODO: finish
 

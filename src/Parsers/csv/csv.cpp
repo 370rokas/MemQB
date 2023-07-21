@@ -24,14 +24,30 @@ void CSVReader::openFile(std::filesystem::path& filepath) {
 
     std::string line{};
     std::getline(this->filePointer, line);
-    std::stringstream ss(line);
 
-    while (ss.good()) {
-        std::string substr;
-        std::getline(ss, substr, ',');
+    std::vector<std::string> line_vec = this->string_to_vector(line, ',', '\\');
+
+    for (auto substr : line_vec) {
         std::vector<std::string>* vect = new std::vector<std::string>;
         this->csvFile.insert({substr, vect});
     }
+}
+
+std::vector<std::string> CSVReader::string_to_vector(std::string& s,
+                                                     const char delimiter,
+                                                     const char escape) {
+    size_t prev(0), pos(0), from(0);
+    std::vector<std::string> v;
+    while ((pos = s.find(delimiter, from)) != s.npos) {
+        if (pos == 0 || s[pos - 1] != escape) {
+            s[pos] = 0;
+            v.push_back(&s[prev]);
+            prev = pos + 1;
+        }
+        from = pos + 1;
+    }
+    v.push_back(&s[prev]);
+    return v;
 }
 
 /*
@@ -52,21 +68,13 @@ void CSVReader::readLine() {
     std::string line{};
     std::getline(this->filePointer, line);
 
-    auto headers = this->getCSVHeader();
+    std::vector<std::string> line_vec = this->string_to_vector(line, ',', '\\');
 
-    std::stringstream ss(line);
-    size_t valIdx = 0;
-    while (ss.good()) {
-        std::string substr;
-        std::getline(ss, substr, ',');
-
-        auto currentColumn = csvFile.at(headers->at(valIdx));
-        currentColumn->push_back(substr);
-
-        valIdx++;
+    // For each header
+    auto colIdx = 0;
+    for (auto kv : csvFile) {
+        kv.second->push_back(line_vec[colIdx++]);
     }
-
-    this->lineNumber++;
 }
 
 void CSVReader::loadFileIntoMemory(std::filesystem::path& fpath) {

@@ -3,6 +3,7 @@
 
 #include <filesystem>
 #include <fstream>
+#include <iostream>
 #include <map>
 #include <sstream>
 #include <string>
@@ -46,6 +47,9 @@ public:
 
     std::map<std::string, std::vector<std::string>*> csvFile;
 
+    std::vector<std::string>
+    string_to_vector(std::string& s, const char delimiter, const char escape);
+
 private:
     APIType API;
 
@@ -59,8 +63,6 @@ private:
     1,   2  , 3
     1,   2  , 3
     */
-
-    size_t lineNumber = 0;
 };
 
 } // namespace MemQB::IO

@@ -4,9 +4,9 @@
 #include <filesystem>
 #include <fstream>
 #include <iostream>
-#include <map>
 #include <sstream>
 #include <string>
+#include <unordered_map>
 #include <vector>
 
 namespace MemQB::IO {
@@ -44,7 +44,7 @@ public:
 
     void loadFileIntoMemory();
 
-    std::map<std::string, std::vector<std::string>*> csvFile;
+    std::vector<std::pair<std::string, std::vector<std::string>*>> csvFile;
 
     std::vector<std::string> getRow(size_t row);
     size_t getNumRows();

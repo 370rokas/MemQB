@@ -28,8 +28,10 @@ void CSVReader::openFile(std::filesystem::path& filepath) {
     std::vector<std::string> line_vec = this->string_to_vector(line, ',', '\\');
 
     for (auto substr : line_vec) {
+        std::cout << substr << std::endl;
+
         std::vector<std::string>* vect = new std::vector<std::string>;
-        this->csvFile.insert({substr, vect});
+        this->csvFile.push_back(std::make_pair(substr, vect));
     }
 
     // Set the local class headers variable
@@ -93,9 +95,7 @@ std::vector<std::string> CSVReader::getRow(size_t row_num) {
     return row;
 }
 
-size_t CSVReader::getNumRows() {
-    return this->csvFile.at(this->csvHeader[0])->size();
-}
+size_t CSVReader::getNumRows() { return this->csvFile.at(0).second->size(); }
 
 // TODO: PLEASE PLEASE PLEASE AVOID CODE REPEAT
 // TODO: PLEASE I BEG YOU STEVE FROM THE FUTURE
@@ -134,8 +134,6 @@ void CSVReader::loadFileIntoMemory() {
 std::vector<std::string>* CSVReader::getCSVHeader() {
 
     if (this->csvHeader.empty()) {
-        this->csvHeader.reserve(this->csvFile.size());
-
         for (auto kv : this->csvFile) {
             this->csvHeader.push_back(kv.first);
         }

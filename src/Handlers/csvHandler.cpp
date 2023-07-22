@@ -30,21 +30,22 @@ void MemQB::Handlers::CSV::handleFile(GraphDB* db, const std::string& filePath,
     std::unordered_map<std::string, size_t> lookupTable;
 
     std::cout << "headers: ";
-    for (auto& v: *csvHeaders) std::cout << v << "|";
+    for (auto& v : *csvHeaders)
+        std::cout << v << "|";
     std::cout << std::endl;
 
     // Prepopulate a lookup table
     // Get the values needed for nodes
     for (auto& [label, properties] : conversionTemplate["Nodes"].items()) {
         for (auto& [key, value] : properties.items()) {
-            auto iter = std::find(csvHeaders->begin(),
-                                  csvHeaders->end(),
+            auto iter = std::find(csvHeaders->begin(), csvHeaders->end(),
                                   value.template get<std::string>());
 
             if (iter != csvHeaders->end()) {
-                lookupTable[key] = std::distance(csvHeaders->begin(), iter) - 1;
+                lookupTable[key] = std::distance(csvHeaders->begin(), iter);
             } else {
-                throw std::runtime_error("Cannot find reference to " + key + " in csv header.");
+                throw std::runtime_error("Cannot find reference to " + key +
+                                         " in csv header.");
             }
         }
     }
@@ -66,10 +67,12 @@ void MemQB::Handlers::CSV::handleFile(GraphDB* db, const std::string& filePath,
             tempNode.label = label;
 
             for (auto& [key, value] : properties.items()) {
-                tempNode.properties.emplace_back(key, vCurrentRow[lookupTable[key]]);
+                tempNode.properties.emplace_back(key,
+                                                 vCurrentRow[lookupTable[key]]);
             }
 
-            std::cout << QueryBuilder::constructNode("t", tempNode) << std::endl;
+            std::cout << QueryBuilder::constructNode("t", tempNode)
+                      << std::endl;
 
             formattedQuery.nodes.emplace_back(tempNode);
         }
@@ -78,12 +81,14 @@ void MemQB::Handlers::CSV::handleFile(GraphDB* db, const std::string& filePath,
         for (auto& relationship : conversionTemplate["Relationships"].items()) {
             Relationship tempRel;
 
-            tempRel.label = relationship.value()["name"].template get<std::string>();
+            tempRel.label =
+                relationship.value()["name"].template get<std::string>();
             tempRel.n1 = relationship.value()["l1"].template get<std::string>();
             tempRel.n2 = relationship.value()["l2"].template get<std::string>();
 
             for (auto& [key, value] : relationship.value()["props"].items()) {
-                tempRel.properties.emplace_back(key, vCurrentRow[lookupTable[key]]);
+                tempRel.properties.emplace_back(key,
+                                                vCurrentRow[lookupTable[key]]);
             }
 
             formattedQuery.relationships.emplace_back(tempRel);
@@ -91,12 +96,13 @@ void MemQB::Handlers::CSV::handleFile(GraphDB* db, const std::string& filePath,
 
         formattedQueries.emplace_back(formattedQuery);
 
-        if (formattedQueries.size() == AMT_HANDLE_AT_ONCE
-            || (currentRow + 1 == nRows && !formattedQueries.empty())) {
+        if (formattedQueries.size() == AMT_HANDLE_AT_ONCE ||
+            (currentRow + 1 == nRows && !formattedQueries.empty())) {
             // TODO: Construct a query with all the formatted values
 
             // TODO: Execute the query
-            std::cout << "UPLOAD TO THE DATABASE " << formattedQueries.size() << "\n";
+            std::cout << "UPLOAD TO THE DATABASE " << formattedQueries.size()
+                      << "\n";
 
             // Clear the vector
             formattedQueries.clear();

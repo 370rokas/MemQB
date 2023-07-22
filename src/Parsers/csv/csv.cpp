@@ -28,8 +28,6 @@ void CSVReader::openFile(std::filesystem::path& filepath) {
     std::vector<std::string> line_vec = this->string_to_vector(line, ',', '\\');
 
     for (auto substr : line_vec) {
-        std::cout << substr << std::endl;
-
         std::vector<std::string>* vect = new std::vector<std::string>;
         this->csvFile.push_back(std::make_pair(substr, vect));
     }

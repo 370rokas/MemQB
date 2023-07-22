@@ -40,26 +40,31 @@ struct FormattedQuery {
 };
 
 /*
- * @brief: Construct a single query
- * @param: queryData A single formatted query
- * @return: A constructed cypher query.
- */
-std::string constructQuery(FormattedQuery queryData);
-
-/*
  * @brief: Constructs a vector of queries
  * @param: queryData A vector of formatted queries
  * @return: A constructed cypher query.
  */
-std::string constructQuery(std::vector<FormattedQuery> queryData);
+std::string constructQuery(const std::vector<FormattedQuery>& queryData);
 
 /*
- * @brief: Constructs node
+ * @brief: Constructs a node
  * @param: ref How the node will be referenced to
  * @param: nodeData Formatted node data
  * @return: A constructed cypher query.
  */
 std::string constructNode(const std::string& ref, const Node& nodeData);
+
+/*
+ * @brief: Constructs a relationship
+ * @param: ref How the relationship will be referenced to
+ * @param: r1 The first relationship object
+ * @param: r2 The second relationship object
+ * @param: relationshipData Formatted relationship data
+ * @return: A constructed cypher query.
+ */
+std::string constructRelationship(const std::string &ref, const std::string &r1, const std::string &r2,
+                                  const Relationship &relationshipData);
+
 } // namespace MemQB::QueryBuilder
 
 #endif // MEMQB_QUERYBUILDER_HPP

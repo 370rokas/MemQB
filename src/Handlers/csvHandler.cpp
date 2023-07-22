@@ -29,11 +29,6 @@ void MemQB::Handlers::CSV::handleFile(GraphDB* db, const std::string& filePath,
 
     std::unordered_map<std::string, size_t> lookupTable;
 
-    std::cout << "headers: ";
-    for (auto& v : *csvHeaders)
-        std::cout << v << "|";
-    std::cout << std::endl;
-
     // Prepopulate a lookup table
     // Get the values needed for nodes
     for (auto& [label, properties] : conversionTemplate["Nodes"].items()) {
@@ -50,10 +45,7 @@ void MemQB::Handlers::CSV::handleFile(GraphDB* db, const std::string& filePath,
         }
     }
 
-    std::cout << "----------------------------------------------------\n";
-
     // Get the values needed for relationships
-
     for (size_t currentRow = 0; currentRow < nRows; currentRow++) {
         vCurrentRow.clear();
 
@@ -70,9 +62,6 @@ void MemQB::Handlers::CSV::handleFile(GraphDB* db, const std::string& filePath,
                 tempNode.properties.emplace_back(key,
                                                  vCurrentRow[lookupTable[key]]);
             }
-
-            std::cout << QueryBuilder::constructNode("t", tempNode)
-                      << std::endl;
 
             formattedQuery.nodes.emplace_back(tempNode);
         }
@@ -98,11 +87,12 @@ void MemQB::Handlers::CSV::handleFile(GraphDB* db, const std::string& filePath,
 
         if (formattedQueries.size() == AMT_HANDLE_AT_ONCE ||
             (currentRow + 1 == nRows && !formattedQueries.empty())) {
-            // TODO: Construct a query with all the formatted values
 
-            // TODO: Execute the query
-            std::cout << "UPLOAD TO THE DATABASE " << formattedQueries.size()
-                      << "\n";
+            // Construct a query with all the formatted values
+            std::string query = QueryBuilder::constructQuery(formattedQueries);
+
+            // Execute the query
+            db->Execute(query);
 
             // Clear the vector
             formattedQueries.clear();

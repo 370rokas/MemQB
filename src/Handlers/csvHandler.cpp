@@ -27,6 +27,32 @@ void MemQB::Handlers::CSV::handleFile(GraphDB* db, const std::string& filePath,
     std::vector<QueryBuilder::FormattedQuery> formattedQueries;
     std::vector<std::string> vCurrentRow;
 
+    std::unordered_map<std::string, size_t> lookupTable;
+
+    std::cout << "headers: ";
+    for (auto& v: *csvHeaders) std::cout << v << "|";
+    std::cout << std::endl;
+
+    // Prepopulate a lookup table
+    // Get the values needed for nodes
+    for (auto& [label, properties] : conversionTemplate["Nodes"].items()) {
+        for (auto& [key, value] : properties.items()) {
+            auto iter = std::find(csvHeaders->begin(),
+                                  csvHeaders->end(),
+                                  value.template get<std::string>());
+
+            if (iter != csvHeaders->end()) {
+                lookupTable[key] = std::distance(csvHeaders->begin(), iter) - 1;
+            } else {
+                throw std::runtime_error("Cannot find reference to " + key + " in csv header.");
+            }
+        }
+    }
+
+    std::cout << "----------------------------------------------------\n";
+
+    // Get the values needed for relationships
+
     for (size_t currentRow = 0; currentRow < nRows; currentRow++) {
         vCurrentRow.clear();
 
@@ -40,8 +66,10 @@ void MemQB::Handlers::CSV::handleFile(GraphDB* db, const std::string& filePath,
             tempNode.label = label;
 
             for (auto& [key, value] : properties.items()) {
-                tempNode.properties.emplace_back(key, value.template get<std::string>());
+                tempNode.properties.emplace_back(key, vCurrentRow[lookupTable[key]]);
             }
+
+            std::cout << QueryBuilder::constructNode("t", tempNode) << std::endl;
 
             formattedQuery.nodes.emplace_back(tempNode);
         }
@@ -55,7 +83,7 @@ void MemQB::Handlers::CSV::handleFile(GraphDB* db, const std::string& filePath,
             tempRel.n2 = relationship.value()["l2"].template get<std::string>();
 
             for (auto& [key, value] : relationship.value()["props"].items()) {
-                tempRel.properties.emplace_back(key, value.template get<std::string>());
+                tempRel.properties.emplace_back(key, vCurrentRow[lookupTable[key]]);
             }
 
             formattedQuery.relationships.emplace_back(tempRel);

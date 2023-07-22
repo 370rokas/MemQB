@@ -37,6 +37,28 @@ namespace MemQB::QueryBuilder {
         std::vector<Node> nodes;
         std::vector<Relationship> relationships;
     };
+
+    /*
+     * @brief: Construct a single query
+     * @param: queryData A single formatted query
+     * @return: A constructed cypher query.
+     */
+    std::string constructQuery(FormattedQuery queryData);
+
+    /*
+     * @brief: Constructs a vector of queries
+     * @param: queryData A vector of formatted queries
+     * @return: A constructed cypher query.
+     */
+    std::string constructQuery(std::vector<FormattedQuery> queryData);
+
+    /*
+     * @brief: Constructs node
+     * @param: ref How the node will be referenced to
+     * @param: nodeData Formatted node data
+     * @return: A constructed cypher query.
+     */
+    std::string constructNode(const std::string& ref, const Node& nodeData);
 }
 
 #endif //MEMQB_QUERYBUILDER_HPP
